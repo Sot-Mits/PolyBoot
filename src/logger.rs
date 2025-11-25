@@ -41,14 +41,13 @@ pub fn init_logger() -> Result<(), Box<dyn std::error::Error>> {
         };
 
     let stdout_dispatch = Dispatch::new()
-        .filter(|metadata| matches!(metadata.level(), Level::Info | Level::Debug | Level::Trace))
+        .filter(|metadata| matches!(metadata.level(), Level::Info | Level::Debug))
         .chain(io::stdout());
 
     let stderr_dispatch = Dispatch::new()
         .filter(|metadata| matches!(metadata.level(), Level::Warn | Level::Error))
         .chain(io::stderr());
 
-    //top-level dispatcher: apply formatting and add the two non-overlapping sinks
     Dispatch::new()
         .format(formatter)
         .level(log::LevelFilter::Trace)
@@ -73,7 +72,7 @@ pub fn _log_debug(args: fmt::Arguments) {
     log::debug!("{}", args);
 }
 
-//Macors for wrappers
+//Macros for wrappers
 #[macro_export]
 macro_rules! info {
     ($($arg:tt)*) => {
